@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <context:property-placeholder location="classpath:web.properties" file-encoding="utf-8" ignore-unresolvable="true" ignore-resource-not-found="true"/>
+
+    <context:component-scan base-package="core.admin.*">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+        <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg name="defaultCharset" value="UTF-8"/>
+                <property name="writeAcceptCharset" value="false"/>
+            </bean>
+         <!--   <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                        <property name="objectMapper">
+                            <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                                <property name="serializationInclusion">
+                            <value type="com.fasterxml.jackson.annotation.JsonInclude">NON_NULL</value>
+                        </property>
+                    </bean>
+                </property>
+            </bean>-->
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+
+    <!--自定义拦截器-->
+<!--    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/transport/**"/>
+            <mvc:exclude-mapping path="/admin/login"/>
+            <mvc:exclude-mapping path="/index.jsp"/>
+            <bean class="core.admin.pro.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+<!--    <mvc:view-resolvers>
+        <
+    </mvc:view-resolvers>-->
+    <mvc:resources mapping="/transport/**" location="/transport/" />
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/WEB-INF/pages/" />
+        <property name="suffix" value=".jsp" />
+        <property name="attributesMap" ref="constants" />
+    </bean>
+<util:map id="constants">
+    <entry key="userTools" value-ref="userMp"/>
+</util:map>
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+    <bean class="core.admin.pro.interceptor.InitData"/>
+    <bean id="userMp" class="core.admin.util.UserUtils"/>
+</beans>

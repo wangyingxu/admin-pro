@@ -1,0 +1,227 @@
+<title>Tables - Ace Admin</title>
+<div class="page-header">
+	<h1>
+		网点管理
+	</h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="table-header">
+					<div class="clearfix">
+						<span>Results for "Latest Registered Domains"</span>
+						<div class="pull-right tableTools-container" style=""></div>
+					</div>
+				</div>
+
+				<div>
+
+					<table id="dynamic-table" class="table table-striped table-bordered table-hover">
+						<thead>
+						<tr>
+							<th class="center">
+								<label>
+									<input type="checkbox" class="ace" />
+									<span class="lbl"></span>
+								</label>
+							</th>
+							<th>网点名称</th>
+							<th>所在城市</th>
+							<th class="hidden-480">联系人</th>
+
+							<th>
+								<i class="icon-time bigger-110 hidden-480"></i>
+								联系电话
+							</th>
+							<th class="hidden-480">
+								<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+								服务等级
+							</th>
+
+							<th>上级网点</th>
+							<th>
+
+								<!-- div.table-responsive -->
+								<h4 class="pink">
+									<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+									<a href="#modal-table" role="button" class="green" data-toggle="modal" ng-click="addBra()"> 添加 </a>
+								</h4>
+								<!-- div.dataTables_borderWrap -->
+
+							</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="webManager in webManagers">
+							<td class="center">
+								<label>
+									<input type="checkbox" class="ace" />
+									<span class="lbl"></span>
+								</label>
+							</td>
+							<td>
+								<a href="#">{{webManager.name}}</a>
+							</td>
+							<td>{{webManager.provCode}}->{{webManager.cityCode}}->{{webManager.areaCode}}</td>
+							<td class="hidden-480">{{webManager.contactUser}}</td>
+							<td>{{webManager.mobile}}</td>
+							<td>{{webManager.level}}</td>
+							<td class="hidden-480">
+								<span class="label label-sm label-warning">{{webManager.parentId}}</span>
+							</td>
+							<td>
+								<div class="hidden-sm hidden-xs action-buttons">
+									<a class="blue" href="#modal-table" data-toggle="modal" ng-click="selectOne(webManager.id)">
+										<i class="ace-icon fa fa-search-plus bigger-130"></i>
+									</a>
+									<a class="green" href="#modal-table" data-toggle="modal" ng-click="selectOne(webManager.id)">
+										<i class="ace-icon fa fa-pencil bigger-130"></i>
+									</a>
+									<a class="red" href ng-click="delete(webManager.id,$index)">
+										<i class="ace-icon fa fa-trash-o bigger-130"></i>
+									</a>
+								</div>
+
+								<div class="hidden-md hidden-lg">
+									<div class="inline pos-rel">
+										<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+											<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+										</button>
+
+										<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+											<li>
+												<a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+														<span class="blue">
+															<i class="ace-icon fa fa-search-plus bigger-120"></i>
+														</span>
+												</a>
+											</li>
+
+											<li>
+												<a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+														<span class="green">
+															<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+														</span>
+												</a>
+											</li>
+
+											<li>
+												<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+														<span class="red">
+															<i class="ace-icon fa fa-trash-o bigger-120"></i>
+														</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div id="modal-table" class="modal fade" tabindex="-1" ng-show="show">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header no-padding">
+						<div class="table-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								<span class="white">&times;</span>
+							</button>
+							Results for "Latest Registered Domains
+						</div>
+					</div>
+
+					<form ng-submit="save()" name="recipeForm" class="form-horizontal">
+						<div class="modal-body no-padding">
+
+							<input type="hidden" name="id" value="${branchNetwork.id}"/>
+
+							<table class="table table-bordered table-striped formLayout m0">
+								<tr>
+									<td>所属地区:</td>
+									<td>
+										<select ng-model="branchNetwork.provCode" name="provCode" id="provCode" class="form-control" required>
+											<option value="">省份选择</option>
+											<option value="山西">山西</option>
+										</select>
+										<select ng-model="branchNetwork.cityCode" name="cityCode" id="cityCode" class="form-control" required>
+											<option value="">城市选择</option>
+											<option value="太原">太原</option>
+										</select>
+										<select ng-model="branchNetwork.areaCode" name="areaCode" id="areaCode" class="form-control" required>
+											<option value="">区(县)选择</option>
+											<option value="阳曲县">阳曲县</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td>名称：</td>
+									<td>
+										<input ng-model="branchNetwork.name" placeholder="" class="form-control" required/>
+									</td>
+								</tr>
+								<tr>
+									<td>联系人：</td>
+									<td>
+										<input ng-model="branchNetwork.contactUser" placeholder="" class="form-control" required />
+									</td>
+								</tr>
+								<tr>
+									<td>联系电话：</td>
+									<td>
+										<input ng-model="branchNetwork.mobile" placeholder="" class="form-control" required/>
+									</td>
+								</tr>
+								<tr>
+									<td>服务等级：</td>
+									<td>
+										<input ng-model="branchNetwork.level"  placeholder=""  type="number" class="form-control"/>
+									</td>
+								</tr>
+								<tr>
+									<td>上级网点：</td>
+									<td>
+										<select  ng-model="branchNetwork.parentId" class="form-control">
+											<option value="0">省级网点</option>
+											<option value="1">东城网点</option>
+											<option value="2">济南网点</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td>地址：</td>
+									<td>
+										<input ng-model="branchNetwork.address" placeholder="" class="form-control"
+											   required/>
+									</td>
+								</tr>
+
+							</table>
+
+						</div>
+
+						<div class="modal-footer no-margin-top">
+							<button class="btn btn-sm btn-primary btn-block" ng-show="!branchNetwork.id" type="submit">保存</button>
+							<button class="btn btn-sm btn-primary btn-block" ng-show="branchNetwork.id" type="submit">修改</button>
+						</div>
+					</form>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+	</div>
+</div>
+
+<!-- PAGE CONTENT ENDS -->
+</div><!-- /.col -->
+</div><!-- /.row -->
+
+
+
